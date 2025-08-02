@@ -10,7 +10,7 @@ import type {CreateNoteParams} from "../../services/noteService";
 import {useState} from "react";
 import type {NoteResponse} from "../../services/noteService";
 import css from "./App.module.css";
-import type { Note } from "../../types/notes";
+import type { Note } from "../../types/note";
 
 export default function App() {
   const client = useQueryClient();
