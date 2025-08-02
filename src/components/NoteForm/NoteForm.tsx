@@ -2,13 +2,25 @@ import css from './NoteForm.module.css';
 import {Formik, Form, ErrorMessage, Field} from 'formik';
 import * as Yup from 'yup';
 import type { CreateNoteParams } from '../../services/noteService';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createNote } from '../../services/noteService';
 
 interface NoteFormProps {
-    onSubmit: (newNote: CreateNoteParams) => void;
     onClose: () => void;
 }
 
-export default function NoteForm({onClose, onSubmit}: NoteFormProps) {
+export default function NoteForm({onClose}: NoteFormProps) {
+    const client = useQueryClient();
+    const createNoteMutation = useMutation({
+    mutationFn: createNote,
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ['notes'] });
+    },
+  })
+    const createNewNote = (newNote: CreateNoteParams) => {
+    createNoteMutation.mutate(newNote);
+    onClose();
+}
     const NoteValidation = Yup.object().shape({
         title: Yup.string()
         .required('Title is required')
@@ -25,7 +37,7 @@ export default function NoteForm({onClose, onSubmit}: NoteFormProps) {
         title: '',
         content: '',
         tag: 'Todo',
-    }} validationSchema={NoteValidation} onSubmit={onSubmit}>
+    }} validationSchema={NoteValidation} onSubmit={createNewNote}>
         <Form className={css.form}>
             <div className={css.formGroup}>
               <label htmlFor="title">Title</label>
