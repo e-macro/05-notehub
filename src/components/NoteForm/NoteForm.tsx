@@ -15,11 +15,11 @@ export default function NoteForm({onClose}: NoteFormProps) {
     mutationFn: createNote,
     onSuccess: () => {
       client.invalidateQueries({ queryKey: ['notes'] });
+      onClose();
     },
   })
     const createNewNote = (newNote: CreateNoteParams) => {
     createNoteMutation.mutate(newNote);
-    onClose();
 }
     const NoteValidation = Yup.object().shape({
         title: Yup.string()

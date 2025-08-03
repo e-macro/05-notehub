@@ -6,11 +6,9 @@ import NoteForm from "../NoteForm/NoteForm";
 import {useQuery, keepPreviousData} from "@tanstack/react-query";
 import {useDebouncedCallback} from "use-debounce";
 import {fetchNotes } from "../../services/noteService";
-// import type {CreateNoteParams} from "../../services/noteService";
 import {useState} from "react";
 import type {NoteResponse} from "../../services/noteService";
 import css from "./App.module.css";
-// import type { Note } from "../../types/note";
 
 export default function App() {
 
@@ -29,9 +27,6 @@ export default function App() {
     setPage(1);
     debouncedSetQuery(e.target.value)
   };
-  // const updateSearchQuery = useDebouncedCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-  // setQuery(e.target.value);
-  // setPage(1)}, 300);
   const { data } = useQuery<NoteResponse>({
     queryKey: ['notes', debouncedQuery, page],
     queryFn: () => fetchNotes(page, debouncedQuery),

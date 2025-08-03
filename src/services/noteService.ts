@@ -1,6 +1,5 @@
 import axios from "axios";
 import type {Note} from "../types/note";
-// import { useMutation } from "@tanstack/react-query";
 
 export interface NoteResponse {
     notes: Note[];
@@ -12,7 +11,6 @@ export interface CreateNoteParams {
     content: string;
     tag: 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
 }
-
 
 export const fetchNotes = async (page: number, query: string): Promise<NoteResponse> => {
     const params = {
@@ -30,17 +28,17 @@ export const fetchNotes = async (page: number, query: string): Promise<NoteRespo
     return response.data;
 }
 
-export const createNote = async (newNote: CreateNoteParams) => {
+export const createNote = async (newNote: CreateNoteParams): Promise<Note> => {
     
-    const res = await axios.post<NoteResponse>('https://notehub-public.goit.study/api/notes', newNote, {headers: {
+    const res = await axios.post<Note>('https://notehub-public.goit.study/api/notes', newNote, {headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
     }});
     return res.data;
 }
 
-export const deleteNote = async (id: string) => {
-    const res = await axios.delete<NoteResponse>(`https://notehub-public.goit.study/api/notes/${id}`, {headers: {
+export const deleteNote = async (id: string): Promise<Note> => {
+    const res = await axios.delete<Note>(`https://notehub-public.goit.study/api/notes/${id}`, {headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
     }})
